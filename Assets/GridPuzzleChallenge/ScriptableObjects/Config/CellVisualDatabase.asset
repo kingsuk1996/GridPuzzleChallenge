@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 421ff9fb644ba8b428847798b064a712, type: 3}
+  m_Name: CellVisualDatabase
+  m_EditorClassIdentifier: 
+  visuals:
+  - Type: 0
+    BackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    Label: P
+    LabelColor: {r: 0, g: 0, b: 0, a: 1}
+  - Type: 1
+    BackgroundColor: {r: 0.1764706, g: 0.22745098, b: 0.34117648, a: 1}
+    Label: 
+    LabelColor: {r: 1, g: 1, b: 1, a: 1}
+  - Type: 2
+    BackgroundColor: {r: 0.09019608, g: 0.12941177, b: 0.21960784, a: 1}
+    Label: X
+    LabelColor: {r: 1, g: 1, b: 1, a: 1}
+  - Type: 3
+    BackgroundColor: {r: 0.9647059, g: 0.78431374, b: 0.37254903, a: 1}
+    Label: E
+    LabelColor: {r: 0, g: 0, b: 0, a: 1}
+  - Type: 4
+    BackgroundColor: {r: 0.54509807, g: 0.36078432, b: 0.9647059, a: 1}
+    Label: C
+    LabelColor: {r: 1, g: 1, b: 1, a: 1}
+  - Type: 5
+    BackgroundColor: {r: 0.3019608, g: 0.8392157, b: 0.6666667, a: 1}
+    Label: G
+    LabelColor: {r: 1, g: 1, b: 1, a: 1}
