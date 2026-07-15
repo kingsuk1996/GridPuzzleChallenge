@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 [System.Serializable]
 public class GridData
 {
@@ -22,5 +24,27 @@ public class GridData
     public void Set(int x, int y, CellType value)
     {
         cells[x, y] = value;
+    }
+
+    public Vector2Int Find(CellType type)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (cells[x, y] == type)
+                    return new Vector2Int(x, y);
+            }
+        }
+
+        return new Vector2Int(-1, -1);
+    }
+
+    public void Move(Vector2Int from, Vector2Int to)
+    {
+        CellType type = Get(from.x, from.y);
+
+        Set(from.x, from.y, CellType.Empty);
+        Set(to.x, to.y, type);
     }
 }

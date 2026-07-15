@@ -3,12 +3,12 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [Header("Level")]
-    [SerializeField] private LevelData levelData;
-    [SerializeField] private CellVisualDatabase cellVisualDatabase;
+    [SerializeField] private LevelData _levelData;
+    [SerializeField] private CellVisualDatabase _cellVisualDatabase;
 
     [Header("References")]
-    [SerializeField] private GridCell cellPrefab;
-    [SerializeField] private RectTransform boardRoot;
+    [SerializeField] private GridCell _gridCellPrefab;
+    [SerializeField] private RectTransform _boardRoot;
 
     private GridData gridData;
     private GridCell[,] cellViews;
@@ -22,14 +22,14 @@ public class GridManager : MonoBehaviour
 
     private void InitializeGrid()
     {
-        if (levelData == null)
+        if (_levelData == null)
         {
             Debug.LogError("LevelData is not assigned!");
             return;
         }
 
-        gridData = new GridData(levelData.Width, levelData.Height);
-        cellViews = new GridCell[levelData.Width, levelData.Height];
+        gridData = new GridData(_levelData.Width, _levelData.Height);
+        cellViews = new GridCell[_levelData.Width, _levelData.Height];
 
         SpawnGrid();
         LoadLevel();
@@ -39,14 +39,14 @@ public class GridManager : MonoBehaviour
     {
         float cellSize = 100f;
 
-        for (int y = 0; y < levelData.Height; y++)
+        for (int y = 0; y < _levelData.Height; y++)
         {
-            for (int x = 0; x < levelData.Width; x++)
+            for (int x = 0; x < _levelData.Width; x++)
             {
-                GridCell cell = Instantiate(cellPrefab, boardRoot);
+                GridCell cell = Instantiate(_gridCellPrefab, _boardRoot);
 
                 cell.name = $"Cell {x},{y}";
-                cell.Initialize(new Vector2Int(x, y), cellVisualDatabase);
+                cell.Initialize(new Vector2Int(x, y), _cellVisualDatabase);
 
                 RectTransform rt = cell.GetComponent<RectTransform>();
                 rt.anchoredPosition = new Vector2(x * cellSize, -y * cellSize);
@@ -58,15 +58,15 @@ public class GridManager : MonoBehaviour
 
     private void LoadLevel()
     {
-        for (int x = 0; x < levelData.Width; x++)
+        for (int x = 0; x < _levelData.Width; x++)
         {
-            for (int y = 0; y < levelData.Height; y++)
+            for (int y = 0; y < _levelData.Height; y++)
             {
                 gridData.Set(x, y, CellType.Empty);
             }
         }
 
-        foreach (CellData cell in levelData.Cells)
+        foreach (CellData cell in _levelData.Cells)
         {
             if (!IsInside(cell.Position.x, cell.Position.y))
                 continue;
@@ -79,9 +79,9 @@ public class GridManager : MonoBehaviour
 
     public void RefreshGrid()
     {
-        for (int x = 0; x < levelData.Width; x++)
+        for (int x = 0; x < _levelData.Width; x++)
         {
-            for (int y = 0; y < levelData.Height; y++)
+            for (int y = 0; y < _levelData.Height; y++)
             {
                 cellViews[x, y].SetType(gridData.Get(x, y));
             }
@@ -93,11 +93,11 @@ public class GridManager : MonoBehaviour
         return cellViews[x, y];
     }
 
-    private bool IsInside(int x, int y)
+    public bool IsInside(int x, int y)
     {
         return x >= 0 &&
-               x < levelData.Width &&
+               x < _levelData.Width &&
                y >= 0 &&
-               y < levelData.Height;
+               y < _levelData.Height;
     }
 }
