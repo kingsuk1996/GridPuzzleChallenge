@@ -14,7 +14,6 @@ public class MovementSystem
     public MoveResult Move(Direction direction)
     {
         Vector2Int player = grid.Find(CellType.Player);
-
         Vector2Int next = player + DirectionToVector(direction);
 
         if (!gridManager.IsInside(next.x, next.y))
@@ -22,14 +21,39 @@ public class MovementSystem
 
         CellType target = grid.Get(next.x, next.y);
 
-        if (target == CellType.Wall)
-            return MoveResult.Blocked;
+        switch (target)
+        {
+            case CellType.Wall:
+                return MoveResult.Blocked;
 
-        grid.Move(player, next);
+            case CellType.Goal:
 
-        gridManager.RefreshGrid();
+                grid.Move(player, next);
+                gridManager.RefreshGrid();
 
-        return MoveResult.Moved;
+                return MoveResult.GoalReached;
+
+            case CellType.Energy:
+
+                grid.Move(player, next);
+                gridManager.RefreshGrid();
+
+                return MoveResult.CollectedEnergy;
+
+            case CellType.Crack:
+
+                grid.Move(player, next);
+                gridManager.RefreshGrid();
+
+                return MoveResult.BrokeCrack;
+
+            default:
+
+                grid.Move(player, next);
+                gridManager.RefreshGrid();
+
+                return MoveResult.Moved;
+        }
     }
 
     private Vector2Int DirectionToVector(Direction direction)

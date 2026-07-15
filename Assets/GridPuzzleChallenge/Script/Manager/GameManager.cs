@@ -32,9 +32,37 @@ public class GameManager : MonoBehaviour
         {
             case MoveResult.Moved:
 
-                _moveCount++;
-                _gameUIController.SetMoves(_moveCount, MaxMoves);
+                RegisterMove();
                 _gameUIController.ClearStatus();
+                break;
+
+            case MoveResult.CollectedEnergy:
+
+                RegisterMove();
+
+                // TODO: Update pulse count
+                //_gameUIController.SetPulse(currentPulse, requiredPulse);
+
+                _gameUIController.SetStatus(GameMessages.EnergyCollected);
+                break;
+
+            case MoveResult.BrokeCrack:
+
+                RegisterMove();
+
+                _gameUIController.SetStatus(GameMessages.CrackBroken);
+                break;
+
+            case MoveResult.GoalReached:
+
+                RegisterMove();
+
+                _gameUIController.SetStatus(GameMessages.GoalReached);
+
+                // TODO
+                // Disable input
+                // Show Win Popup
+
                 break;
 
             case MoveResult.OutOfBounds:
@@ -46,12 +74,13 @@ public class GameManager : MonoBehaviour
 
                 _gameUIController.SetStatus(GameMessages.Blocked);
                 break;
-
-            case MoveResult.GoalReached:
-
-                _gameUIController.SetStatus(GameMessages.GoalReached);
-                break;
         }
+    }
+
+    private void RegisterMove()
+    {
+        _moveCount++;
+        _gameUIController.SetMoves(_moveCount, MaxMoves);
     }
 
     private void OnDestroy()
