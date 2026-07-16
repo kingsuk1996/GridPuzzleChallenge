@@ -2,20 +2,30 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Level Database")]
+    [SerializeField] private LevelDatabase _levelDatabase;
+
+    [Header("Script Reference")]
     [SerializeField] private SwipeInputController _swipeInputController;
     [SerializeField] private GridManager _gridManager;
     [SerializeField] private GameUIController _gameUIController;
 
-    private int _moveCount;
     private int _maxMoves;
     private int _maxPulse;
 
     private int _currentMoves;
     private int _currentPulse;
+    private int _currentLevelIndex = 0;
+
+    private bool _isGameOver;
 
     private MovementSystem _movementSystem;
     private UndoSystem _undoSystem;
-    private bool _isGameOver;
+
+    private void Awake()
+    {
+        _gridManager.LoadLevel(_levelDatabase.Levels[_currentLevelIndex]);
+    }
 
     private void Start()
     {
@@ -30,7 +40,6 @@ public class GameManager : MonoBehaviour
 
         _currentMoves = 0;
         _currentPulse = 0;
-        _moveCount = 0;
 
         _maxMoves = _gridManager.LevelData.MaxMoves;
         _maxPulse = _gridManager.LevelData.MaxPulse;
@@ -41,7 +50,10 @@ public class GameManager : MonoBehaviour
         _gameUIController.SetMoves(_currentMoves, _maxMoves);
         _gameUIController.SetPulse(_currentPulse, _maxPulse);
         _gameUIController.SetUndoCount(0);
+
         _gameUIController.ClearStatus();
+        _gameUIController.SetStatus($"Grid cleared in {_maxMoves} moves!");
+
         _gameUIController.HideGameOver();
     }
 
@@ -50,18 +62,20 @@ public class GameManager : MonoBehaviour
         if (_isGameOver)
             return;
 
-        SaveState();
+        GameState previousState = CreateGameState();
 
         MoveResult result = _movementSystem.Move(direction);
 
         switch (result)
         {
             case MoveResult.Moved:
+                _undoSystem.Save(previousState);
                 RegisterMove();
                 _gameUIController.ClearStatus();
                 break;
 
             case MoveResult.CollectedEnergy:
+                _undoSystem.Save(previousState);
                 _currentPulse++;
                 RegisterMove();
                 _gameUIController.SetStatus(GameMessages.EnergyCollected);
@@ -69,6 +83,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case MoveResult.BrokeCrack:
+                _undoSystem.Save(previousState);
                 _currentPulse--;
                 RegisterMove();
                 _gameUIController.SetStatus(GameMessages.CrackBroken);
@@ -76,6 +91,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case MoveResult.GoalReached:
+                _undoSystem.Save(previousState);
                 _isGameOver = true;
                 RegisterMove();
                 _gameUIController.SetStatus(GameMessages.GoalReached);
@@ -89,28 +105,26 @@ public class GameManager : MonoBehaviour
             case MoveResult.Blocked:
                 _gameUIController.SetStatus(GameMessages.Blocked);
                 break;
-        }
-    }
 
-    private void SaveState()
-    {
-        _undoSystem.Save(new GameState
-        {
-            Grid = _gridManager.Grid.Clone(),
-            MovesRemaining = _currentMoves,
-            Pulse = _currentPulse
-        });
+        }
 
         _gameUIController.SetUndoCount(_undoSystem.Count);
     }
 
+    private GameState CreateGameState()
+    {
+        return new GameState
+        {
+            Grid = _gridManager.Grid.Clone(),
+            MovesRemaining = _currentMoves,
+            Pulse = _currentPulse
+        };
+    }
+
     private void RegisterMove()
     {
-        _moveCount++;
         _currentMoves--;
-
         _gameUIController.SetMoves(_currentMoves, _maxMoves);
-        _gameUIController.SetUndoCount(_moveCount);
 
         if (_currentMoves == 0)
         {
@@ -145,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        _gridManager.Restart();
+        _gridManager.LoadLevel(_levelDatabase.Levels[_currentLevelIndex]);
         InitializeGame();
     }
 

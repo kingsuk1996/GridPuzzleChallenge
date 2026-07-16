@@ -3,7 +3,7 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [Header("Level")]
-    [SerializeField] private LevelData _levelData;
+    private LevelData _levelData;
     [SerializeField] private CellVisualDatabase _cellVisualDatabase;
 
     [Header("References")]
@@ -16,24 +16,15 @@ public class GridManager : MonoBehaviour
     public GridData Grid => gridData;
     public LevelData LevelData => _levelData;
 
-    private void Awake()
+    public void LoadLevel(LevelData levelData)
     {
-        InitializeGrid();
-    }
+        _levelData = levelData;
 
-    private void InitializeGrid()
-    {
-        if (_levelData == null)
-        {
-            Debug.LogError("LevelData is not assigned!");
-            return;
-        }
-
-        gridData = new GridData(_levelData.Width, _levelData.Height);
-        cellViews = new GridCell[_levelData.Width, _levelData.Height];
+        gridData = new GridData(levelData.Width, levelData.Height);
+        cellViews = new GridCell[levelData.Width, levelData.Height];
 
         SpawnGrid();
-        LoadLevel();
+        PopulateLevel();
     }
 
     private void SpawnGrid()
@@ -62,7 +53,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void LoadLevel()
+    private void PopulateLevel()
     {
         for (int x = 0; x < _levelData.Width; x++)
         {
@@ -83,11 +74,6 @@ public class GridManager : MonoBehaviour
         RefreshGrid();
     }
 
-    public void Restart()
-    {
-       InitializeGrid();
-    }
-
     public void RefreshGrid()
     {
         for (int x = 0; x < _levelData.Width; x++)
@@ -97,11 +83,6 @@ public class GridManager : MonoBehaviour
                 cellViews[x, y].SetType(gridData.Get(x, y));
             }
         }
-    }
-
-    public GridCell GetView(int x, int y)
-    {
-        return cellViews[x, y];
     }
 
     public bool IsInside(int x, int y)
