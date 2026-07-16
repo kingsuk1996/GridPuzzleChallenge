@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 
-public class UndoSystem
+namespace GridPulse
 {
-    private readonly Stack<GameState> _history = new();
-
-    public int Count => _history.Count;
-
-    public void Save(GameState state)
+    public class UndoSystem
     {
-        _history.Push(state);
-    }
+        private readonly Stack<GameState> _history = new();
 
-    public bool TryUndo(out GameState state)
-    {
-        if (_history.Count == 0)
+        public int Count => _history.Count;
+
+        public void Save(GameState state)
         {
-            state = null;
-            return false;
+            _history.Push(state);
         }
 
-        state = _history.Pop();
-        return true;
-    }
+        public bool TryUndo(out GameState state)
+        {
+            if (_history.Count == 0)
+            {
+                state = null;
+                return false;
+            }
 
-    public void Clear()
-    {
-        _history.Clear();
+            state = _history.Pop();
+            return true;
+        }
+
+        public void Clear()
+        {
+            _history.Clear();
+        }
     }
 }

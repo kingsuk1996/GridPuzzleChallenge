@@ -1,9 +1,12 @@
-public enum MoveResult
+namespace GridPulse
 {
-    Moved,
-    Blocked,
-    OutOfBounds,
-    GoalReached,
-    CollectedEnergy,
-    BrokeCrack
+    public enum MoveResult
+    {
+        Moved,
+        Blocked,
+        OutOfBounds,
+        GoalReached,
+        CollectedEnergy,
+        BrokeCrack
+    }
 }

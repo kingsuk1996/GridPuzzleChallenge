@@ -1,53 +1,56 @@
 using TMPro;
 using UnityEngine;
 
-public class GameUIController : MonoBehaviour
+namespace GridPulse
 {
-    [Header("Top Bar")]
-    [SerializeField] private TMP_Text _movesText;
-    [SerializeField] private TMP_Text _pulseText;
-    [SerializeField] private TMP_Text _undoText;
-
-    [Header("Status")]
-    [SerializeField] private TMP_Text _statusText;
-
-    [Header("Game Over")]
-    [SerializeField] private GameObject _gameOverPopup;
-    [SerializeField] private TMP_Text _gameOverText;
-
-    public void SetMoves(int current, int max)
+    public class GameUIController : MonoBehaviour
     {
-        _movesText.text = $"MOVES {current}/{max}";
-    }
+        [Header("Top Bar")]
+        [SerializeField] private TMP_Text _movesText;
+        [SerializeField] private TMP_Text _pulseText;
+        [SerializeField] private TMP_Text _undoText;
 
-    public void SetPulse(int current, int max)
-    {
-        _pulseText.text = $"PULSE {current}/{max}";
-    }
+        [Header("Status")]
+        [SerializeField] private TMP_Text _statusText;
 
-    public void SetUndoCount(int count)
-    {
-        _undoText.text = $"UNDO {count}";
-    }
+        [Header("Game Over")]
+        [SerializeField] private GameObject _gameOverPopup;
+        [SerializeField] private TMP_Text _gameOverText;
 
-    public void SetStatus(string message)
-    {
-        _statusText.text = message;
-    }
+        public void SetMoves(int current, int max)
+        {
+            _movesText.text = $"MOVES {current}/{max}";
+        }
 
-    public void ClearStatus()
-    {
-        _statusText.text = string.Empty;
-    }
+        public void SetPulse(int current, int max)
+        {
+            _pulseText.text = $"PULSE {current}/{max}";
+        }
 
-    public void ShowGameOver(string message)
-    {
-        _gameOverPopup.SetActive(true);
-        _gameOverText.text = message;
-    }
+        public void SetUndoCount(int count)
+        {
+            _undoText.text = $"UNDO {count}";
+        }
 
-    public void HideGameOver()
-    {
-        _gameOverPopup.SetActive(false);
+        public void SetStatus(string message)
+        {
+            _statusText.text = message;
+        }
+
+        public void ClearStatus()
+        {
+            _statusText.text = string.Empty;
+        }
+
+        public void ShowGameOver(string message)
+        {
+            _gameOverPopup.SetActive(true);
+            _gameOverText.text = message;
+        }
+
+        public void HideGameOver()
+        {
+            _gameOverPopup.SetActive(false);
+        }
     }
 }

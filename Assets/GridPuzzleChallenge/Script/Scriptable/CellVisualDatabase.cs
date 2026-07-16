@@ -2,44 +2,47 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CellVisualDatabase", menuName = "Grid Puzzle/Cell Visual Database")]
-public class CellVisualDatabase : ScriptableObject
+namespace GridPulse
 {
-    [SerializeField]
-    private List<CellVisualData> visuals = new();
-
-    private Dictionary<CellType, CellVisualData> _lookup;
-
-    private void OnEnable()
+    [CreateAssetMenu(fileName = "CellVisualDatabase", menuName = "Grid Puzzle/Cell Visual Database")]
+    public class CellVisualDatabase : ScriptableObject
     {
-        BuildLookup();
-    }
+        [SerializeField]
+        private List<CellVisualData> visuals = new();
 
-    private void BuildLookup()
-    {
-        _lookup = new Dictionary<CellType, CellVisualData>();
+        private Dictionary<CellType, CellVisualData> _lookup;
 
-        foreach (var visual in visuals)
+        private void OnEnable()
         {
-            _lookup[visual.Type] = visual;
+            BuildLookup();
+        }
+
+        private void BuildLookup()
+        {
+            _lookup = new Dictionary<CellType, CellVisualData>();
+
+            foreach (var visual in visuals)
+            {
+                _lookup[visual.Type] = visual;
+            }
+        }
+
+        public CellVisualData GetVisual(CellType type)
+        {
+            if (_lookup == null || _lookup.Count == 0)
+                BuildLookup();
+
+            _lookup.TryGetValue(type, out var visual);
+            return visual;
         }
     }
 
-    public CellVisualData GetVisual(CellType type)
+    [Serializable]
+    public class CellVisualData
     {
-        if (_lookup == null || _lookup.Count == 0)
-            BuildLookup();
-
-        _lookup.TryGetValue(type, out var visual);
-        return visual;
+        public CellType Type;
+        public Color BackgroundColor;
+        public string Label;
+        public Color LabelColor = Color.white;
     }
-}
-
-[Serializable]
-public class CellVisualData
-{
-    public CellType Type;
-    public Color BackgroundColor;
-    public string Label;
-    public Color LabelColor = Color.white;
 }

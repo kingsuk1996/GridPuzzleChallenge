@@ -1,20 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameActionsUI : MonoBehaviour
+namespace GridPulse
 {
-    [SerializeField] private GameManager _gameManager;
-
-    [Header("Action Buttons")]
-    [SerializeField] private Button _undoBtn;
-    [SerializeField] private Button _restartBtn;
-
-    private void Start()
+    public class GameActionsUI : MonoBehaviour
     {
-        _undoBtn.onClick.RemoveAllListeners();
-        _restartBtn.onClick.RemoveAllListeners();
+        [SerializeField] private GameManager _gameManager;
 
-        _undoBtn.onClick.AddListener(() => _gameManager.Undo());
-        _restartBtn.onClick.AddListener(() => _gameManager.Restart());
+        [Header("Action Buttons")]
+        [SerializeField] private Button _undoBtn;
+        [SerializeField] private Button _restartBtn;
+
+        private void Start()
+        {
+            _undoBtn.onClick.RemoveAllListeners();
+            _restartBtn.onClick.RemoveAllListeners();
+
+            _undoBtn.onClick.AddListener(() => _gameManager.Undo());
+            _restartBtn.onClick.AddListener(() => _gameManager.Restart());
+        }
     }
 }

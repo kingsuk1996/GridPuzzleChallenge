@@ -1,8 +1,10 @@
-
-public enum Direction
+namespace GridPulse
 {
-    Up,
-    Down,
-    Left,
-    Right
+    public enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
 }

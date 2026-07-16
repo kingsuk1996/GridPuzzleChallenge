@@ -2,27 +2,30 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GridCell : MonoBehaviour
+namespace GridPulse
 {
-    [SerializeField] private Image _background;
-    [SerializeField] private TMP_Text _label;
-
-    private CellVisualDatabase _database;
-
-    public void Initialize(Vector2Int position, CellVisualDatabase database)
+    public class GridCell : MonoBehaviour
     {
-        _database = database;
-    }
+        [SerializeField] private Image _background;
+        [SerializeField] private TMP_Text _label;
 
-    public void SetType(CellType type)
-    {
-        CellVisualData data = _database.GetVisual(type);
+        private CellVisualDatabase _database;
 
-        if (data == null)
-            return;
+        public void Initialize(Vector2Int position, CellVisualDatabase database)
+        {
+            _database = database;
+        }
 
-        _background.color = data.BackgroundColor;
-        _label.text = data.Label;
-        _label.color = data.LabelColor;
+        public void SetType(CellType type)
+        {
+            CellVisualData data = _database.GetVisual(type);
+
+            if (data == null)
+                return;
+
+            _background.color = data.BackgroundColor;
+            _label.text = data.Label;
+            _label.color = data.LabelColor;
+        }
     }
 }
