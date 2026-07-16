@@ -13,6 +13,15 @@ The objective is to reach the Goal (`G`) before running out of moves while manag
 
 ---
 
+# Repository Information
+
+| Item | Value |
+|------|-------|
+| **Branch** | `Task/Gameplay` |
+| **Unity Version** | `6000.0.67f1` |
+| **Main Scene** | `Assets/GridPuzzleChallenge/Scenes/Main.unity` |
+| **APK** | https://github.com/kingsuk1996/GridPuzzleChallenge/releases/download/v1.0/GridPulse.apk |
+
 # Gameplay Features
 
 ## Core Mechanics
