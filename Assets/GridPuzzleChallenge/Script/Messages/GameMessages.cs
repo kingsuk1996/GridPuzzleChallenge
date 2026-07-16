@@ -6,4 +6,6 @@ public static class GameMessages
     public const string GoalReached = "Puzzle completed!";
     public const string EnergyCollected = "Energy collected.";
     public const string CrackBroken = "Crack broken.";
+    public const string GridCleared = "GRID CLEARED";
+    public const string OutOfMoves = "OUT OF MOVES";
 }

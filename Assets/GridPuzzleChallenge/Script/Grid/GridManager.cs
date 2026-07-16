@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     private GridCell[,] cellViews;
 
     public GridData Grid => gridData;
+    public LevelData LevelData => _levelData;
 
     private void Awake()
     {
@@ -37,6 +38,11 @@ public class GridManager : MonoBehaviour
 
     private void SpawnGrid()
     {
+        foreach (Transform child in _boardRoot)
+        {
+            Destroy(child.gameObject);
+        }
+
         float cellSize = 100f;
 
         for (int y = 0; y < _levelData.Height; y++)
@@ -75,6 +81,11 @@ public class GridManager : MonoBehaviour
         }
 
         RefreshGrid();
+    }
+
+    public void Restart()
+    {
+       InitializeGrid();
     }
 
     public void RefreshGrid()

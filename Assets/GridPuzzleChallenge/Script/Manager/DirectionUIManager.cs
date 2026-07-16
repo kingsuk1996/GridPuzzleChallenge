@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem.XInput;
 using UnityEngine.UI;
 
 public class DirectionUIManager : MonoBehaviour

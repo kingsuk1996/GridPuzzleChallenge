@@ -9,6 +9,13 @@ public class LevelData : ScriptableObject
     public int Width = 6;
     public int Height = 6;
 
+    [Header("Gameplay")]
+    [Min(1)]
+    public int MaxMoves = 14;
+
+    [Min(1)]
+    public int MaxPulse = 2;
+
     [Header("Cells")]
     public List<CellData> Cells = new();
 }
