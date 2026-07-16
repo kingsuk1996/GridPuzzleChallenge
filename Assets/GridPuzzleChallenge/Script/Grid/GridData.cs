@@ -47,4 +47,29 @@ public class GridData
         Set(from.x, from.y, CellType.Empty);
         Set(to.x, to.y, type);
     }
+
+    public CellType[,] Clone()
+    {
+        CellType[,] copy = new CellType[Width, Height];
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                copy[x, y] = cells[x, y];
+            }
+        }
+        return copy;
+    }
+
+    public void Restore(CellType[,] state)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                cells[x, y] = state[x, y];
+            }
+        }
+    }
 }

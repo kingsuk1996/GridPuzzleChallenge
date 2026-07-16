@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private int _currentPulse;
 
     private MovementSystem _movementSystem;
+    private UndoSystem _undoSystem;
     private bool _isGameOver;
 
     private void Start()
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     private void InitializeGame()
     {
         _movementSystem = new MovementSystem(_gridManager.Grid, _gridManager);
+        _undoSystem = new UndoSystem();
 
         _currentMoves = 0;
         _currentPulse = 0;
@@ -47,6 +49,8 @@ public class GameManager : MonoBehaviour
     {
         if (_isGameOver)
             return;
+
+        SaveState();
 
         MoveResult result = _movementSystem.Move(direction);
 
@@ -88,6 +92,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SaveState()
+    {
+        _undoSystem.Save(new GameState
+        {
+            Grid = _gridManager.Grid.Clone(),
+            MovesRemaining = _currentMoves,
+            Pulse = _currentPulse
+        });
+
+        _gameUIController.SetUndoCount(_undoSystem.Count);
+    }
+
     private void RegisterMove()
     {
         _moveCount++;
@@ -103,12 +119,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region Game Actions
+
+    public void Undo()
+    {
+        if (!_undoSystem.TryUndo(out GameState state))
+            return;
+
+        _gridManager.Grid.Restore(state.Grid);
+
+        _currentMoves = state.MovesRemaining;
+        _currentPulse = state.Pulse;
+
+        _gridManager.RefreshGrid();
+
+        _gameUIController.SetMoves(_currentMoves, _maxMoves);
+        _gameUIController.SetPulse(_currentPulse, _maxPulse);
+        _gameUIController.SetUndoCount(_undoSystem.Count);
+
+        _gameUIController.ClearStatus();
+
+        _isGameOver = false;
+        _gameUIController.HideGameOver();
+    }
+
     public void Restart()
     {
         _gridManager.Restart();
-
         InitializeGame();
     }
+
+    #endregion Game Actions
 
     private void OnDestroy()
     {
